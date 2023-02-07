@@ -1,0 +1,56 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+buildscript {
+    ext.kotlin_version = '1.8.0'
+    ext.jackson_version = '2.14.1'
+
+    repositories {
+        maven { url = "https://cache-redirector.jetbrains.com/maven-central" }
+        maven { url = "https://cache-redirector.jetbrains.com/intellij-dependencies" }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+repositories {
+    maven { url = "https://cache-redirector.jetbrains.com/maven-central" }
+    maven { url = "https://cache-redirector.jetbrains.com/intellij-dependencies" }
+
+    maven { url = "https://www.jetbrains.com/intellij-repository/releases" }
+    maven { url = "https://www.jetbrains.com/intellij-repository/snapshots" }
+
+    maven { url = "https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/grazi/grazie-platform-public" }
+}
+
+dependencies {
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testImplementation "org.kodein.di:kodein-di-jvm:7.16.0"
+
+    testImplementation 'com.jetbrains.intellij.tools:ide-performance-testing-commands-squashed:LATEST-EAP-SNAPSHOT'
+    testImplementation 'com.jetbrains.intellij.tools:ide-starter-junit5-squashed:LATEST-EAP-SNAPSHOT'
+    testImplementation 'com.jetbrains.intellij.tools:ide-metrics-collector-squashed:LATEST-EAP-SNAPSHOT'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.1'
+
+    testImplementation 'commons-io:commons-io:2.11.0'
+}
+
+configurations {
+    implementation.exclude(group: 'io.ktor')
+    implementation.exclude(group: 'com.jetbrains.infra')
+    implementation.exclude(group: 'com.jetbrains.intellij.remoteDev')
+}
+
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+}
+
