@@ -26,17 +26,6 @@ import kotlin.io.path.div
 class TestIndexing {
     private lateinit var container: TestContainerImpl
 
-    private fun IDETestContext.copyExistingConfig(configPath: Path): IDETestContext {
-        FileUtils.copyDirectory(configPath.toFile(), paths.configDir.toFile())
-        return this
-    }
-
-    private fun IDETestContext.copyExistingPlugins(pluginPath: Path): IDETestContext {
-        FileUtils.copyDirectory(pluginPath.toFile(), paths.pluginsDir.toFile())
-        return this
-    }
-
-
     class IdeLocalInstaller(private val installer: Path) : IdeInstallator {
         override fun install(ideInfo: IdeInfo): Pair<String, InstalledIde> {
             val ideInstaller = IdeInstaller(installer, "locally-installed-ide")
