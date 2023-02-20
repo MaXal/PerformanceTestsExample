@@ -9,6 +9,9 @@ import com.intellij.ide.starter.models.IdeInfo
 import com.intellij.ide.starter.models.TestCase
 import com.intellij.ide.starter.path.GlobalPaths
 import com.intellij.ide.starter.project.LocalProjectInfo
+import com.intellij.ide.starter.report.publisher.ReportPublisher
+import com.intellij.ide.starter.report.publisher.impl.ConsoleTestResultPublisher
+import com.intellij.ide.starter.report.publisher.impl.QodanaTestResultPublisher
 import com.intellij.ide.starter.runner.TestContainerImpl
 import com.jetbrains.performancePlugin.commands.chain.exitApp
 import com.jetbrains.performancePlugin.commands.chain.startProfile
@@ -48,6 +51,7 @@ class TestIndexing {
                 "/Users/maxim.kolmakov/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-2/223.8617.56"
             //CONFIGURATION: comment line below if you don't want to use locally installed IDE and want to download one
             bindFactory<IdeInfo, IdeInstallator>(overrides = true) { _ -> IdeLocalInstaller(Paths.get(pathToInstalledIDE)) }
+            bindSingleton<List<ReportPublisher>>(overrides = true) { listOf(ConsoleTestResultPublisher) }
         }
     }
 
